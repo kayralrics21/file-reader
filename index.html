@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0e">
+  <meta name="description" content="A private, offline, multi-format file inspector and previewer.">
+  <title>kayralrics.com - file reader</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-text">file reader<small>kayralrics.com</small></div></div>
+    <div class="sidebar-tools">
+      <button type="button" id="openButton" class="button primary"><span class="button-symbol">＋</span> Open files</button>
+      <button type="button" id="folderButton" class="button secondary"><span class="button-symbol">▤</span> Open folder</button>
+      <input hidden type="file" id="fileInput" multiple>
+      <input hidden type="file" id="folderInput" multiple webkitdirectory directory>
+    </div>
+    <div class="library-heading"><span>FILES <span id="fileCount" class="count">0</span></span><button type="button" id="clearButton" title="Remove files from this session" class="icon-button">Clear all</button></div>
+    <div class="library-filter"><select id="sortSelect" aria-label="Sort files"><option value="added">Date added</option><option value="name">Name (A–Z)</option><option value="size">Size (largest)</option><option value="modified">Last modified</option></select><span class="shortcut-hint">Ctrl+K</span></div>
+    <input id="fileSearch" class="search" type="search" placeholder="Find a file..." autocomplete="off" aria-label="Filter files">
+    <div class="file-list" id="fileList"><p class="empty-list">No files opened</p></div>
+    <div class="side-bottom"><span class="privacy-dot"></span> Private · offline · local only</div>
+  </aside>
+  <main class="workspace">
+    <header class="workspace-header">
+      <div class="document-heading"><div class="document-icon" id="documentIcon">◇</div><div class="document-name-wrap"><h1 id="documentName">Universal file viewer</h1><div id="documentSubtitle">Open any file to inspect its contents</div></div></div>
+      <div class="header-buttons"><button class="button secondary compact" id="previousButton" disabled title="Previous file (Alt+↑)" aria-label="Previous file">↑</button><button class="button secondary compact" id="nextButton" disabled title="Next file (Alt+↓)" aria-label="Next file">↓</button><button class="button secondary compact" id="reportButton" disabled title="Export local format report as JSON">Export report</button><button class="button secondary compact" id="downloadButton" disabled>Save original</button><button class="button secondary compact icon-only" id="removeButton" disabled title="Remove selected file (Delete)" aria-label="Remove selected file">×</button></div>
+    </header>
+    <div id="tabs" class="tabs" role="tablist" aria-label="File views">
+      <button class="tab active" data-tab="preview" role="tab" aria-selected="true">Preview</button>
+      <button class="tab" data-tab="structure" role="tab" aria-selected="false">Structure</button>
+      <button class="tab" data-tab="text" role="tab" aria-selected="false">Text</button>
+      <button class="tab" data-tab="hex" role="tab" aria-selected="false">Hex</button>
+      <button class="tab" data-tab="details" role="tab" aria-selected="false">Details</button>
+    </div>
+    <div class="content-scroll" id="contentScroll">
+      <div class="welcome" id="welcome">
+        <div class="welcome-glyph">▧</div><h2>Explore any file</h2>
+        <p>Inspect text, images, media, documents, archives, 3D models and unknown binary formats. Files stay on your device.</p>
+        <button class="button primary welcome-open" id="welcomeButton">Choose files</button>
+        <div class="welcome-formats">TXT · JSON · PDF · DOCX · XLSX · ZIP · BLEND · OBJ · STL · GLB · SQLITE · and more</div>
+      </div>
+      <div id="content" hidden></div>
+    </div>
+    <div class="workspace-footer"><span id="status">Ready</span><span id="footnote">Local only · Ctrl+O open · Ctrl+K search · Alt+↑/↓ navigate</span></div>
+  </main>
+  <aside class="inspector" id="inspector">
+    <div class="inspector-heading">FILE INFORMATION</div>
+    <div id="inspectorContent" class="inspector-content"><p class="muted">Select a file to view its properties and detected format.</p></div>
+    <div class="inspector-bottom">kayralrics.net</div>
+  </aside>
+</div>
+<div class="drop-overlay" id="dropOverlay" hidden><div class="drop-inner"><span>＋</span><strong>Drop files to open</strong><small>Nothing leaves your browser</small></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="vendor/jszip.min.js"></script>
+<script src="vendor/pako.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
